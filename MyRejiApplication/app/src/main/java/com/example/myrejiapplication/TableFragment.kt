@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.compose.runtime.snapshotFlow
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -43,7 +44,7 @@ private const val ARG_PARAM2 = "param2"
  */
 
 
-
+private lateinit var database: DatabaseReference
 
 class TableFragment : Fragment() {
     // TODO: Rename and change types of parameters
@@ -70,6 +71,10 @@ class TableFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        database = Firebase.database.reference
+
+        FirebaseViewModel().asd()
+        //FirebaseViewModel().example()
         _binding = FragmentTableBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -118,6 +123,12 @@ class TableFragment : Fragment() {
      //           adapter.submitList(it)
       //      }
      //   }
+
+
+
+
+
+
 
         binding.tableDetailButton .setOnClickListener {
             this.findNavController().navigate(R.id.action_TableFragment_to_TableDetailFragment)

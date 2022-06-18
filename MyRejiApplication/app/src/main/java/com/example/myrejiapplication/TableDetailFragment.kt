@@ -48,7 +48,7 @@ class TableDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.addNewTable.setOnClickListener {
-          AppFirebase()
+
            // Log.d("TAG-z",AppFirebase().test() .toString())
 
           //  val database = Firebase.database

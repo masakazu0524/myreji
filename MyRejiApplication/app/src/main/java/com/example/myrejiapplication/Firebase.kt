@@ -1,53 +1,44 @@
 package com.example.myrejiapplication
 
-import android.text.Editable
+import android.service.autofill.UserData
 import android.util.Log
-import com.example.myrejiapplication.databinding.CategoryTextItemListViewBinding
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import com.example.myrejiapplication.databinding.FragmentTableDetailBinding
 
 
-
-class AppFirebase()  {
-
-    val tableList:MutableList<String> = mutableListOf()
-    val list=writeNewItem()
-    //firebaseに書き込み
-
-    class AddTable(private var binding: FragmentTableDetailBinding){
+class FirebaseDatabaseApp() {
 
 
-
-    }
-
-    fun writeNewItem(): MutableList<String> {
-
-        var _binding: FragmentTableDetailBinding? = null
-        val binding get() = _binding!!
-
-       val fireDatabase = Firebase.database.reference
-        //新規追加書き込みする（push）
-        text=binding.
-        fireDatabase.child("shop").child("TableName").push().setValue(addTableName)
-
+    fun addPostEventListener() {
+        //
+        val userData = UserData()
         //リスナー設定
         //共通リファランス
-        val postReference = FirebaseDatabase.getInstance().getReference("shop")
-        var mutableList= mutableListOf<String>()
+        val firebaseDatabase = Firebase.database.reference
+        FirebaseDatabase.getInstance().getReference()
+        //val postReference: DatabaseReference=firebaseDatabase
 
+        val postReference = firebaseDatabase.child("shop")// .getReference()
 
-        val postListener = object : ValueEventListener {
+        val refMap: DatabaseReference = Firebase.database.getReference("shop")
+        // refMap.child("TableList").addChildEventListener(object : ChildEventListener {
+
+        refMap.child("TableName").addValueEventListener(object : ValueEventListener {
+            // val postListener = object : ValueEventListener {
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.d("TAG-pitems", "items.values.toString()")
+                // Log.w("TAG--loadPost:onCancelled", databaseError.toException())
+            }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
                 //
-                val items: HashMap<String, String>? = dataSnapshot.child("shop").getValue(object :
-                    GenericTypeIndicator<HashMap<String, String>>() {})
+                val items: HashMap<String, String>? =
+                    dataSnapshot.child("shop").getValue(object :
+                        GenericTypeIndicator<HashMap<String, String>>() {})
 
 
                 // val   map= mapOf(dataSnapshot.key)
@@ -61,357 +52,138 @@ class AppFirebase()  {
                 if (items != null) {
                     Log.d("TAG-pitems", items.keys.toString())
                 }
-
-                Log.d("TAG-pitems", items.let { it -> }.toString())
-
-                Log.d("TAG-hash2", dataSnapshot.children.toList().toString())
-                Log.d("TAG-hash2", dataSnapshot.value.toString())
-                Log.d("TAG-hash2key", dataSnapshot.key.toString())
-                val sa = arrayListOf(dataSnapshot.value.toString())
-                Log.d("TAG-hash2sa", sa[0])
-                Log.d("TAG-hash2key", dataSnapshot.key.toString())
-                //  Log.d("TAG-hash2val",dataSnapshot.child() .value .toString())
-                Log.d("TAG-hash2val", dataSnapshot.child("0").value.toString())
-                Log.d("TAG-hash2chi", dataSnapshot.children.toList().toString())
-                // Log.d("TAG-hash2chi",)
-                // Log.d("TAG-hash2",dataSnapshot.child("jk"). key .toString())
-                Log.d("TAG-hash2", dataSnapshot.child("-N2vJytb-IOrUZc68bK_").value.toString())
-
-                val zaq = dataSnapshot.child("TableList").toString()
-                Log.d("TAG-t", zaq.toString())
-                // Log.d("TAG-t",zaq .toString())
-                //Log.d("TAG-t",zaq.toString())
-
-
-                var tableList = mutableListOf(zaq)
-
-
-                tableList.add(addTableName)
-
-
-                val dbCon = fireDatabase.child("shop").child("TableName")
-
-
-                // let() dbCon = firebase.database().ref("/messages/");
-                //          dbCon.once("value", function(snapshot) {
-                //           snapshot.forEach(function(child) {
-                //              child.ref.update({
-                //                     open: false
-                //              });
-                //          });
-                //       });
-
-
-                val postsRef: DatabaseReference = postReference.ref.child("TableList")
-                // Generate a reference to a new location and add some data using push()
-                val pushedPostRef: DatabaseReference = postsRef.push()
-
-                val postId = pushedPostRef.key
-
-                Log.d("TAG-p", postId.toString())
-
-// Get the unique ID generated by a push()
-
-
-                Log.d("TAG-t", zaq.toString())
-                Log.d("TAG-t", tableList.toString())
-
-
-
-                Log.d("TAG-t", tableList.toString())
-
-
-                val post = dataSnapshot.value
-                Log.d("TAG-p1", post.toString())
-                Log.d("TAG-po", postReference.child("TableList").key.toString())
-                //Log.d("TAG-p",dataSnapshot.value .toString())
-
-
-                val snap = mutableListOf(dataSnapshot.child("shop").child("TableList").value)
-                Log.d("TAG-snap", snap.toString())
-                //val snap1:Map<String,Any> = mapOf(dataSnapshot.child("shop").child("TableList").value.toString())
-                Log.d("TAG-p2", dataSnapshot.child("shop").child("TableList").toString())
-                val a = dataSnapshot.child("List").value
-                Log.d("TAG-p3", listOf(a).toString())
-                Log.d("TAG-p3", listOf(dataSnapshot.child("List").value).toString())
-
-                // snap.add(addTableName)
-                //Log.d("TAG-snapadd",snap. toList().toString() )
-
-
-                //   val resultMap=HashMap<String, String>()
-                //  val tList=ArrayList<HashMap<String, String>>()
-
-                //searchItem(snap)
             }
-
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-
-        //リスナーをTableListに設置、実装
-           // postReference.child("TableList").addValueEventListener(postListener)
-        postReference.addValueEventListener(postListener)
-
-        //    fireDatabase.child("shop"). child("TableList").push().setValue(tableList)
-
-        //子要素にアクセス
-
-        val refMap: DatabaseReference = Firebase.database.getReference("shop")
-
-
-
-        refMap.child("TableList").addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-                // 子要素が追加された時に呼ばれる
-                // dataSnapshot : 追加された要素のKey-Value
-                // s:追加された要素の一つ前の要素のkey名
-                Log.d("TAG-seit", "ValueEventListener#onChildAdded")
-                Log.d("TAG-s0", dataSnapshot.toString())
-                Log.d("TAG-s1", dataSnapshot.key.toString())
-                Log.d("TAG-s2", dataSnapshot.value.toString())
-                Log.d(
-                    "TAG-s3",
-                    (dataSnapshot.key.toString() to dataSnapshot.value.toString()).toString()
-                )
-                Log.d("TAG-s4", s.toString())
-                Log.d("TAG-s5", dataSnapshot.child("TableList").toString())
-                Log.d("TAG-s5", dataSnapshot.child("TableList").value.toString())
-
-                mutableList.add(dataSnapshot.value.toString())
-
-
-                Log.d("TAG-s6", mutableList.toString())
-
-
-
-
-
-
-                val a = dataSnapshot.key.toString() to dataSnapshot.value.toString()
-
-                val items: HashMap<String, String>? = dataSnapshot.child("shop").getValue(object :
-                    GenericTypeIndicator<HashMap<String, String>>() {})
-
-
-            }
-
-            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
-                // 子要素に変化があった場合に呼ばれる
-                // dataSnapshot : 変化のあった子要素のKey-Value
-                // s:変化のあった子要素の一つ前の子要素のKey名
-                Log.d("seit", "ValueEventListener#onChildChanged")
-            }
-
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-                // 子要素が削除された
-                Log.d("seit", "ValueEventListener#onChildRemoved")
-            }
-
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
-                // 子要素の順番が変化した
-                Log.d("seit", "ValueEventListener#onChildMoved")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // サーバーエラーかもしくはセキュリティとデータべースルールによってデータにアクセスできない
-                Log.d("seit", "ValueEventListener#onCancelled")
-            }
-
         })
-
-
-
-
-        Log.d("retaseit", mutableList.toString())
-        return mutableList
-
     }
-
-
-
 }
 
 
-
-
-
-
-
-        //    Log.d("TAG-mm",postReference.child("TableList").key .toString())
-
-        //   val Test = postReference.child("TableList").key
-
-
-/*
-
-        //val myRef=FirebaseDatabase.getInstance().getReference("shop")
-
-        //fireDatabase.child("shop").child("TableList").setValue(mlist)
-
-        //shopに変更があれば自動で取得
-      //  myRef.child("TableName") .addValueEventListener(
-        //    object : ValueEventListener {
-           //     override fun onDataChange(snapshot: DataSnapshot) {
-
-                    //List形式に変換して更新書き込み（set）
-              //      val tablelist=snapshot.child("TableList").value
-                   // val mlist= mutableListOf(tablelist as Any)
-
-                 //   Log.d("TAG-snap",snapshot.toString())
-                 //   Log.d("TAG-key",myRef.child("TableList").key .toString())
-                   //     Log.d("TAG-get",myRef.child("TableList").get().addOnSuccessListener {  } .toString())
-                   // mlist.add(addTableName)
-
-              //  }
-
-              //  override fun onCancelled(error: DatabaseError) {
-              //      TODO("Not yet implemented")
-              //  }
-  //  } )
-
-    //読み込み
-    fun readItem(){
-
-
-
-
-                   //
-
-
-                    //   val items: HashMap<String ,String>? = snapshot.getValue(object :
-                    //     GenericTypeIndicator<HashMap<String,String>>() {})
-
-                    //   Log.d("TAG-hash2", items.toString())
-
-                    ; // will have value of String: "your-project-name"
-                  //  Log.d("TAG-hash2",snapshot.key .toString())
-
-
-
-
-                    //TableListに登録
-                    //
-                    // TableNameに追加登録
-                    //  fireDatabase.child("tableName").push().setValue(tableName)
-
-                    //   HashMap<String, String> resultMap = new HashMap<String, String>();
-                    //  　　　　List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-
-                    //  for (i in snapshot : DataSnapshot) {
-                    //   snapshot.getKey() // will have value of String: "users", then "books"
-                    //    for (DataSnapshot deeperSnapshot : dataSnapshot) {
-                    //   snapshot.getKey();
-                    // if snapshot.getKey() is "users", this will have value of String: "randomUserId1", then "randomUserId2"
-                    // If snapshot.getKey() is "books", this will have value of String: "bookId1", then "bookId2"
-                    //  }
-
-                    // }
-
-
-                }
-
-
-
-
-            }
-
-
-
-    //    FirebaseDatabase.getInstance().getReference("tableName").addValueEventListener(
-        //    object : ValueEventListener {
-         //       override fun onDataChange(snapshot: DataSnapshot) {
-
-                //    Log.d("TAG-","kaeatta--")
-
-                    //   val items: HashMap<String ,String>? = snapshot.getValue(object :
-                    //     GenericTypeIndicator<HashMap<String,String>>() {})
-
-                    //   Log.d("TAG-hash2", items.toString())
-
-                    ; // will have value of String: "your-project-name"
-               //     Log.d("TAG-hash2",snapshot.key .toString())
-
-
-             //       val resultMap=HashMap<String, String>()
-          //          val tList=ArrayList<HashMap<String, String>>()
-
-              //      val items: HashMap<String, String>? = snapshot.getValue(object :
-
-               //         GenericTypeIndicator<HashMap<String, String>>() {})
-
-
-              //      val valueList = items?.values?.let { ArrayList(it) }
-
-               //     val _fireList = items?.keys?.let { ArrayList(it) }!!
-
-                    //TableListに登録
-                    // fireDatabase.child("TableList").setValue(list)
-                    // TableNameに追加登録
-                    //  fireDatabase.child("tableName").push().setValue(tableName)
-
-                    //   HashMap<String, String> resultMap = new HashMap<String, String>();
-                    //  　　　　List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-
-                    //  for (i in snapshot : DataSnapshot) {
-                    //   snapshot.getKey() // will have value of String: "users", then "books"
-                    //    for (DataSnapshot deeperSnapshot : dataSnapshot) {
-                    //   snapshot.getKey();
-                    // if snapshot.getKey() is "users", this will have value of String: "randomUserId1", then "randomUserId2"
-                    // If snapshot.getKey() is "books", this will have value of String: "bookId1", then "bookId2"
-                    //  }
-
-                    // }
-
-
-                }
-
-
-
-
-fun searchItem(snapshot: MutableList<Any?>) {
-
-
-
-    Log.d("TAG-serch",snapshot.toString())
-   // Log.d("TAG-serch",snapshot.toString())
-   // for (i in post:Any?){
-
-     //   if post.getKey() is "users", this will have value of String: "randomUserId1", then "randomUserId2"
-
- //   }
-
-}
-
-
-
-//      override fun onCancelled(error: DatabaseError) {
-          //          TODO("Not yet implemented")
-          //      }
-
-
-          //  }
-      //  )
-   //  }
-
-
-
-
-
-
-
-
-
-//}
-
-
-
-
-
-        //myRef1.setValue(list
-
-
-             */
+//リスナーをTableListに設置、実装
+        // postReference.child("TableList").addValueEventListener(postListener)
+     //   postReference.addValueEventListener(postListener)
+// Listen
+        // firebaseDatabase.getReference(NOTIFICATION_REFERENCE).addValueEventListener(postListener)
+
+
+
+
+
+
+
+
+// val fireDatabase = Firebase.database.reference
+// val postRef = FirebaseDatabase.getInstance().getReference("shop")
+//
+// val postListener = object : ValueEventListener {
+// override fun onCancelled(error: DatabaseError) {
+// // error
+// }
+//
+// override fun onDataChange(dataSnapshot: DataSnapshot) {
+// //  val items = dataSnapshot.children.map { ds -> ds.getValue(StoredNotification::class.java).apply { this?.psteRef = ds.key } }
+// // items is the result
+// }
+// // Listen
+// // firebaseDatabase.getReference(NOTIFICATION_REFERENCE).addValueEventListener(postListener)
+//
+// }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// class right() {
+//
+//
+// val tableList: MutableList<String> = mutableListOf()
+// val list = writeNewItem()
+// //firebaseに書き込み
+//
+//
+// fun writeNewItem() {
+//
+//
+// //    val postsRef: DatabaseReference = postReference.ref.child("TableList")
+// // Generate a reference to a new location and add some data using push()
+// //    val pushedPostRef: DatabaseReference = postsRef.push()
+//
+// var _binding: FragmentTableDetailBinding? = null
+// //   val binding get() = _binding!!
+//
+// val fireDatabase = Firebase.database.reference
+// //新規追加書き込みする（push）
+// //  text=binding.
+// // fireDatabase.child("shop").child("TableName").push().setValue(addTableName)
+//
+//
+// //    fireDatabase.child("shop"). child("TableList").push().setValue(tableList)
+//
+// //子要素にアクセス
+//
+//
+// val refMap: DatabaseReference = Firebase.database.getReference("shop")
+//
+//
+//
+// refMap.child("TableList").addChildEventListener(object : ChildEventListener {
+// override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+// // 子要素が追加された時に呼ばれる
+// // dataSnapshot : 追加された要素のKey-Value
+// // s:追加された要素の一つ前の要素のkey名
+// Log.d("TAG-seit", "ValueEventListener#onChildAdded")
+// Log.d("TAG-s0", dataSnapshot.toString())
+// Log.d("TAG-s1", dataSnapshot.key.toString())
+// Log.d("TAG-s2", dataSnapshot.value.toString())
+// Log.d(
+// "TAG-s3",
+// (dataSnapshot.key.toString() to dataSnapshot.value.toString()).toString()
+// )
+// Log.d("TAG-s4", s.toString())
+// Log.d("TAG-s5", dataSnapshot.child("TableList").toString())
+// Log.d("TAG-s5", dataSnapshot.child("TableList").value.toString())
+//
+// //   mutableList.add(dataSnapshot.value.toString())
+//
+//
+// val a = dataSnapshot.key.toString() to dataSnapshot.value.toString()
+//
+// val items: HashMap<String, String>? = dataSnapshot.child("shop").getValue(object :
+// GenericTypeIndicator<HashMap<String, String>>() {})
+//
+//
+// }
+//
+// override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+// // 子要素に変化があった場合に呼ばれる
+// // dataSnapshot : 変化のあった子要素のKey-Value
+// // s:変化のあった子要素の一つ前の子要素のKey名
+// Log.d("seit", "ValueEventListener#onChildChanged")
+// }
+//
+// override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+// // 子要素が削除された
+// Log.d("seit", "ValueEventListener#onChildRemoved")
+// }
+//
+// override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
+// // 子要素の順番が変化した
+// Log.d("seit", "ValueEventListener#onChildMoved")
+// }
+//
+// override fun onCancelled(databaseError: DatabaseError) {
+// // サーバーエラーかもしくはセキュリティとデータべースルールによってデータにアクセスできない
+// Log.d("seit", "ValueEventListener#onCancelled")
+// }
+//
+// })
+// }
+// }

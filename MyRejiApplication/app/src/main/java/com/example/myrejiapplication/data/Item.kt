@@ -32,8 +32,8 @@ data class UserItem(
 
 
 
-//data class FirebaseItem(
-  //  val itemName_firebase: String="",
+data class FirebaseItem(
+    val StoredNotification: String,
 
 
-//)
+)
