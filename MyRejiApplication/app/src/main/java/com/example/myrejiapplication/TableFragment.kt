@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.compose.runtime.snapshotFlow
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -28,6 +29,9 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.NonCancellable.children
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -66,14 +70,37 @@ class TableFragment : Fragment() {
    // private var _binding: com.example.myrejiapplication.databinding.FragmentFirstBinding? = null
   //  private val binding get() = _binding!!
 
-    override fun onCreateView(
+    override  fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         database = Firebase.database.reference
 
-        FirebaseViewModel().asd()
+
+
+
+
+
+
+
+
+
+       lifecycleScope.launch {
+           FirebaseViewModel().firebaseData()
+
+         //  showIOData()
+
+
+       }
+
+
+        //RealtimeDatabaseRepository().appFirebaseRealtime(database)
+
+
+
+
+
         //FirebaseViewModel().example()
         _binding = FragmentTableBinding.inflate(inflater, container, false)
         return binding.root
