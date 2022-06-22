@@ -3,19 +3,29 @@ package com.example.myrejiapplication
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
+
 class FirebaseViewModel ():ViewModel(){
 
-
-
+     var database: DatabaseReference= Firebase.database.reference
     val count = MutableLiveData<String>()
 
-    fun asd(){
+    fun  firebaseData(){
+        viewModelScope.launch (Dispatchers.IO){
 
-        RealtimeDatabaseRepository().appFirebaseRealtime()
+
+            RealtimeDatabaseRepository().appFirebaseRealtime(database)
+
+        }
     }
+
+
+
 
 
     @OptIn(FlowPreview::class)
@@ -25,7 +35,7 @@ class FirebaseViewModel ():ViewModel(){
 
 
 
-.collect{count.value=it}
+//.collect{count.value=it}
 
            // runBlocking {
     println(count.value)
